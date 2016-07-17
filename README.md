@@ -1,8 +1,7 @@
 # DiteCross
 Discord-Telegram Cross messaging system
 
-![Discord Example](/readme_assets/discord.PNG)
-![Telegram Example](/readme_assets/telegram.PNG)
+![DiteCross Example](/readme_assets/example.png)
 
 This program is just a proof of concept to demonstrate the possibility to relay Discord and Telegram messages from one group to another.
 
