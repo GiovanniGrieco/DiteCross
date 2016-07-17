@@ -11,7 +11,6 @@ DiteCross is based on NodeJS (so make sure to have it) and relies upon some depe
 ```
 npm install --save --no-optional discord.js
 npm install --save node-telegram-bot-api
-npm install --save readline
 ```
 
 ## Getting started
