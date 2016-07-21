@@ -25,10 +25,8 @@ function discord_login_via_file() {
 	var fields = fs.readFileSync('discord.ini').toString().split('\n');
 	if (fields[0] == "[token]") {
 		discord_ditecross.loginWithToken(fields[1]).then(discord_loginSuccess).catch(loginError);
-	} else if (fields[0] == "[email]") {
-		discord_ditecross.login(fields[1], fields[2]).then(discord_loginSuccess).catch(loginError);
 	} else {
-		loginError('Discord login data not found in file');
+		loginError('Discord token not found in file');
 	}
 }
 

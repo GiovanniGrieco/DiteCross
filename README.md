@@ -3,14 +3,13 @@ Discord-Telegram Cross messaging system
 
 ![DiteCross Example](/readme_assets/example.png)
 
-This program is just a proof of concept to demonstrate the possibility to relay Discord and Telegram messages from one group to another.
+This program demonstrates the possibility to relay Discord and Telegram messages from one group to another.
 
 ## Installation
-DiteCross is based on NodeJS (so make sure to have it) and relies upon some dependencies. Follow these commands to install them with `npm`:
+DiteCross is based on NodeJS with `npm`, so make sure to have both of them installed. To install DiteCross just type
 
 ```
-npm install --save --no-optional discord.js
-npm install --save node-telegram-bot-api
+npm install
 ```
 
 ## Getting started
@@ -26,15 +25,7 @@ PLACE_TOKEN_HERE
 ```
 
 ### How to register a Discord token
-For Discord you have to create a new account and place the token in a `discord.ini` file, like you did for Telegram.
-
-In case you don't know how to get a Discord token, just place in `discord.ini` file DiteCross' email and password. They will be replaced at first login with the correct token. Follow this model:
-
-```
-[email]
-PLACE_EMAIL_HERE
-PLACE_PASSWORD_HERE
-```
+For Discord you have to create a new User Bot and place the token in a `discord.ini` file, like you did for Telegram.
 
 ## First time run
 To run DiteCross just type `node ditecross.js`

@@ -1,0 +1,35 @@
+{
+  "name": "ditecross-bot.js",
+  "version": "1.0.0",
+  "description": "Dicord-Telegram Cross Messaging System",
+  "main": "ditecross.js",
+  "scripts": {
+    "test": "node ditecross.js --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corsaroquad/DiteCross.git"
+  },
+  "keywords": [
+    "DiteCross",
+    "Discord",
+    "Telegram",
+    "Bot",
+    "Messaging",
+    "Message",
+    "System",
+    "Deliver",
+    "Send",
+    "Share"
+  ],
+  "author": "Giovanni Grieco",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/corsaroquad/DiteCross/issues"
+  },
+  "homepage": "https://github.com/corsaroquad/DiteCross#readme",
+  "dependencies": {
+    "discord.js": "^8.0.0",
+    "node-telegram-bot-api": "^0.23.3"
+  }
+}
