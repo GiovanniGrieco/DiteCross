@@ -40,6 +40,6 @@ DiteCross - Made by corsaro
 
 Make sure that DiteCross bots are both in **ONE** discord channel and **ONE** Telegram group or private channel. Make a "test message" on both ends so that DiteCross can understand where to relay the messages.
 
-**Remember that this is a proof of concept, not a end-user and secure final program.**
+**Be aware that DiteCross is not stable and secure, yet.**
 
 That's it, enjoy! If you have questions / problems / whatsoever, feel free to open an issue here on GitHub or contact me via email (see my profile).
