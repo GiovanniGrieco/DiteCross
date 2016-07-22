@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/corsaroquad/DiteCross#readme",
   "dependencies": {
-    "discord.js": "^8.0.0",
+    "discord.io": "github:izy521/discord.io",
     "node-telegram-bot-api": "^0.23.3"
   }
 }
