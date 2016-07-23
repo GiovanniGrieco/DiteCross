@@ -144,10 +144,12 @@ function DiteCross(Discord_Token, Telegram_Token) {
 	}
 
 	this.Telegram_messagePoll = function (message) {
-		if (message.text.charAt(0) === '/')
-			this.Telegram_manageCommand(message)
-		else
-			this.Telegram_manageMessage(message)
+		if (message.text) {
+			if (message.text.charAt(0) === '/')
+				this.Telegram_manageCommand(message)
+			else
+				this.Telegram_manageMessage(message)
+		}
 	}
 
 	this.Telegram_manageCommand = function (message) {
