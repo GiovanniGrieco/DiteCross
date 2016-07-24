@@ -47,10 +47,13 @@ function init() {
 
 	var Bot = new DiteCross(DISCORD_TOKEN, TELEGRAM_TOKEN)
 
-	process.on('SIGINT', function () {
+	process.on('SIGTERM', gracefulExit).on('SIGINT', gracefulExit)
+
+	function gracefulExit() {
 		Bot.saveCrossTable()
-		process.exit(0)
-	})
+		Bot.logout()
+		process.exit()
+	}
 }
 
 /*
@@ -264,9 +267,13 @@ function DiteCross(Discord_Token, Telegram_Token) {
 		return table
 	}
 
-	this.CrossTable = this.readCrossTable()
-}
+	this.saveCrossTable = function () {
+		fs.writeFileSync('crosstable.json', JSON.stringify(this.CrossTable), 'utf-8')
+	}
 
-DiteCross.prototype.saveCrossTable = function () {
-	fs.writeFileSync('crosstable.json', JSON.stringify(this.CrossTable), 'utf-8')
+	this.CrossTable = this.readCrossTable()
+
+	this.logout = function() {
+		this.Discord_Bot.disconnect()
+	}
 }
