@@ -66,6 +66,7 @@ function DiteCross(Discord_Token, Telegram_Token) {
 	this.Discord_initialise = function (token) {
 		this.Discord_Bot = new this.Discord_API.Client({token: token, autorun: true})
 		this.Discord_Bot.on('message', (user, userID, channelID, message, event) => this.Discord_messagePoll(user, userID, channelID, message, event))
+		this.Discord_Bot.on('disconnect', (error, code) => this.Discord_reconnect(error, code))
 	}
 
 	this.Discord_messagePoll = function (user, userID, channelID, message, event) {
@@ -130,6 +131,10 @@ function DiteCross(Discord_Token, Telegram_Token) {
 				this.Telegram_Bot.sendMessage(current['telegram_chat_id'], ret)
 			}
 		}, this)
+	}
+
+	this.Discord_reconnect = function (error, code) {
+		this.Discord_Bot.connect()
 	}
 
 	this.Discord_API = require('discord.io')
