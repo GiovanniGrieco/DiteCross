@@ -83,7 +83,7 @@ function DiteCross(Discord_Token, Telegram_Token) {
 			this.Discord_Bot.sendMessage({to: to, message: ret})
 		} else if (message.startsWith('about', 1)) {
 			var ret = 'DiteCross - Discord-Telegram Cross messaging system\n' +
-				'Developed by Giovanni Grieco - @corsaro\n' +
+				'Developed by Giovanni Grieco\n' +
 				'\nI\'m open source! :D\n' +
 				'https://github.com/corsaroquad/DiteCross'
 			var to = channelID ? channelID : userID
