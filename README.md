@@ -32,7 +32,7 @@ The handshake process is described below:
 
 1. Type `/handshake` on Telegram
 2. DiteCross asks you to insert Discord server and channel names, like this: `@ServerName#ChannelName`
-3. If DiteCross is present on that server and channel, it will ask you to type `/handshake` there; do it
+3. If DiteCross is present on that server and channel, it will ask you to type `/handshake` there with a password
 4. Enjoy!
 
 NOTE: I hope to have built a robust and simple handshaking system. If you have one better in mind, please let me know!

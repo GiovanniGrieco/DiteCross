@@ -78,7 +78,9 @@ function DiteCross(Discord_Token, Telegram_Token) {
 
 	this.Discord_manageCommand = function (userID, channelID, message) {
 		if (message.startsWith('handshake', 1)) {
-			this.Discord_processHandshake(userID, channelID)
+			var regPsw = /^\/handshake\s([A-Z]\-?[a-z]+\-[A-Z]\-?[a-z]+\-[A-Z]\-?[a-z]+)/g
+			var password = regPsw.exec(message)
+			this.Discord_processHandshake(userID, channelID, password)
 		} else if (message.startsWith('help', 1)) {
 			var ret = 'I relay your message for you on Telegram or help you know what happens there directly here\n' +
 				'\nRemember to start the handshake on Telegram. If you had done it, type /handshake here to finish.\n' +
@@ -100,7 +102,7 @@ function DiteCross(Discord_Token, Telegram_Token) {
 		}
 	}
 
-	this.Discord_processHandshake = function (userID, channelID) {
+	this.Discord_processHandshake = function (userID, channelID, password) {
 		var resp = false;
 		this.Discord_handshakeRequests.forEach(function (current, index) {
 			if (
@@ -109,19 +111,31 @@ function DiteCross(Discord_Token, Telegram_Token) {
 				current[0] === this.Discord_Bot.servers[this.Discord_Bot.channels[channelID].guild_id].name &&
 				!resp
 			) {
-				this.CrossTable.push({
-					'telegram_chat_id': current[2],
-					'discord_channel_id': channelID
-				})
-				var ret = 'Handshaked with Telegram!'
-				this.Discord_Bot.sendMessage({to: channelID, message: ret})
-				ret = 'Handshaked with Discord!'
-				this.Telegram_Bot.sendMessage(current[2], ret)
-				resp = true
+				if (password)
+					if ( // XNOR = A * B + !A * !B for Password
+						(
+							current[4] != undefined &&
+							current[4] === password[1]
+						) ||
+						(
+							!(current[4] != undefined) &&
+							!(current[4] === password[1])
+						)
+					) {
+						this.CrossTable.push({
+							'telegram_chat_id': current[2],
+							'discord_channel_id': channelID
+						})
+						var ret = 'Handshaked with Telegram!'
+						this.Discord_Bot.sendMessage({to: channelID, message: ret})
+						ret = 'Handshaked with Discord!'
+						this.Telegram_Bot.sendMessage(current[2], ret)
+						resp = true
+					}
 			}
 		}, this)
 		if (!resp)
-			this.Discord_Bot.sendMessage({to: channelID, message: 'Sorry, I don\'t have hands to shake'})
+			this.Discord_Bot.sendMessage({to: channelID, message: 'Sorry, I don\'t have hands to shake or the password is wrong'})
 	}
 
 	this.Discord_manageMessage = function (userID, channelID, message) {
@@ -165,16 +179,18 @@ function DiteCross(Discord_Token, Telegram_Token) {
 			var ret = 'What is the server and the channel you want to handshake?\n' +
 				'Please type them as @servername#channelname'
 			this.Telegram_Bot.sendMessage(message.chat.id, ret)
-			this.Telegram_handshakeRequests.push([message.chat.id, message.from.id, message.date])
+			var password = new this.Password()
+			this.Telegram_handshakeRequests.push([message.chat.id, message.from.id, message.date, password.generate()])
 		} else if (message.text.startsWith('cancel', 1)) {
 			this.Telegram_cancelHandshake(message.chat.id)
 		} else if (message.text.startsWith('help', 1) || message.text.startsWith('start', 1)) {
 			var ret = 'I relay your messages for you on Discord or help you know what happens there directly here\n' +
 				'\nYou can control me by sending these commands:\n' +
-				'\n/handshake - associate this chat with a Discord channel\n' +
-				'/about - about me and my creator\n' +
-				'/help - get this help message\n' +
-				'/start - alias of help'
+				'\n/handshake - Associate this chat with a Discord channel\n' +
+				'\n/cancel - Cancel Handshake request or current association\n' +
+				'/about - About me and my creator\n' +
+				'/help - Get this help message\n' +
+				'/start - Alias of help'
 			this.Telegram_Bot.sendMessage(message.chat.id, ret)
 		} else if (message.text.startsWith('about', 1)) {
 			var ret = 'DiteCross - Discord-Telegram Cross messaging system\n' +
@@ -192,9 +208,11 @@ function DiteCross(Discord_Token, Telegram_Token) {
 		// check if user made /handshake firstly
 		var remove_entries = [], padding = 0
 		var resp = false
+		var password = ''
 		this.Telegram_handshakeRequests.forEach(function (current, index) {
 			if (request.chat.id === current[0] && request.from.id === current[1] && !resp) {
 				resp = true;
+				password = current[3]
 				remove_entries.push(index)
 			} else if ((request.chat.id === current[0] || request.from.id === current[1]) && resp) {
 				remove_entries.push(index)
@@ -206,10 +224,12 @@ function DiteCross(Discord_Token, Telegram_Token) {
 		}, this)
 
 		if (resp) {
-			var ret = 'Please, type on that channel the command /handshake to confirm or /cancel here'
+			var ret = 'Please, type on that channel the following command:\n' +
+				'/handshake ' + password + '\n' +
+				'or type /cancel here if you change your mind'
 			this.Telegram_Bot.sendMessage(request.chat.id, ret)
 
-			this.Discord_handshakeRequests.push([regexpExec[1], regexpExec[2], request.chat.id, request.date])
+			this.Discord_handshakeRequests.push([regexpExec[1], regexpExec[2], request.chat.id, request.date, password])
 		}
 	}
 
@@ -240,9 +260,22 @@ function DiteCross(Discord_Token, Telegram_Token) {
 			padding++
 		}, this)
 
+		remove_entries = []
+		padding = 0
+		this.CrossTable.forEach(function (current, index) {
+			if (chatID === current['telegram_chat_id']) {
+				resp = true
+				remove_entries.push(index)
+			}
+		})
+		remove_entries.forEach(function (current) {
+			this.CrossTable.splice(current - padding, 1)
+			padding++
+		}, this)
+
 		var ret = ''
 		if (resp) {
-			ret = 'Handshake request canceled'
+			ret = 'Handshake cancelled'
 		} else {
 			ret = 'Nothing to cancel'
 		}
@@ -281,4 +314,6 @@ function DiteCross(Discord_Token, Telegram_Token) {
 	this.logout = function() {
 		this.Discord_Bot.disconnect()
 	}
+
+	this.Password = require('./password.js')
 }
