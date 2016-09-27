@@ -14,8 +14,8 @@ To install DiteCross just type `npm install`
 Make sure to have both **token**s to login to Telegram and Discord.
 
 ### How to register a Telegram token
-For Telegram you have to talk with [@BotFather](https://telegram.me/BotFather) and follow the procedure to make a new bot. [@DiteCross_bot](https://telegram.me/DiteCross_bot) is the official one (not 24/7 yet).
-The token should be placed in a `telegram.ini` file like below:
+You should talk with [@BotFather](https://telegram.me/BotFather) and follow its procedure to make a new bot. [@DiteCross_bot](https://telegram.me/DiteCross_bot) is the official one (not 24/7 yet).
+The token must be placed in a `telegram.ini` file like below:
 
 ```
 [token]
@@ -23,7 +23,7 @@ PLACE_TOKEN_HERE
 ```
 
 ### How to register a Discord token
-For Discord you have to create a new User Bot and place the token in a `discord.ini` file, like you did for Telegram.
+You have to create a new User Bot and place the token in a `discord.ini` file, like you did for Telegram.
 
 ## First time run and handshake
 To run DiteCross just type `node ditecross.js`
@@ -31,7 +31,7 @@ To run DiteCross just type `node ditecross.js`
 The handshake process is described below:
 
 1. Type `/handshake` on Telegram
-2. DiteCross asks you to insert Discord server and channel names, like this: `@ServerName#ChannelName`
+2. DiteCross asks you to insert Discord server and channel names, like this: `@ServerName#ChannelName` _(spaces are supported)_
 3. If DiteCross is present on that server and channel, it will ask you to type `/handshake` there with a password
 4. Enjoy!
 

@@ -2,3 +2,4 @@ node_modules/
 discord.ini
 telegram.ini
 crosstable.json
+.DS_Store

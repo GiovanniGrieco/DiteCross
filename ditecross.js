@@ -40,14 +40,14 @@ function throwError(error) {
 /*
  * INIT
  */
-init();
+init()
 function init() {
 	const DISCORD_TOKEN  = read_token('discord.ini')
 	const TELEGRAM_TOKEN = read_token('telegram.ini')
 
 	var Bot = new DiteCross(DISCORD_TOKEN, TELEGRAM_TOKEN)
 
-	process.on('SIGTERM', gracefulExit).on('SIGINT', gracefulExit)
+	process.on('SIGTERM', gracefulExit).on('SIGINT', gracefulExit).on('SIGHUP', gracefulExit)
 
 	function gracefulExit() {
 		Bot.saveCrossTable()
